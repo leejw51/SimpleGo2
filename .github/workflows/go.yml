@@ -24,7 +24,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
-          args: release --snapshot --rm-dist --skip-validate   
+          args: release --rm-dist --skip-validate   
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
