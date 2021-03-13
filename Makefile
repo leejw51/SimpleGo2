@@ -6,4 +6,4 @@ release:
 		echo "\033[91m.release-env is required for release\033[0m";\
 		exit 1;\
 	fi
-	goreleaser release --rm-dist --skip-validate
+	goreleaser release --snapshot --rm-dist --skip-validate
