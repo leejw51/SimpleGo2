@@ -21,10 +21,13 @@ jobs:
         with:
           go-version: '^1.16.1'
       - name: setup release environment
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --snapshot --rm-dist --skip-validate   
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |-
           echo 'GITHUB_TOKEN=${{secrets.GITHUB_TOKEN}}' > .release-env
-      - name: release publish
-        run: make release
+
       
