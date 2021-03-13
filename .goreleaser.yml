@@ -21,8 +21,6 @@ builds:
     binary: bin/hello
     env:
       - CGO_ENABLED=1
-      - CC=o64-clang
-      - CXX=o64-clang++
     goos:
       - darwin
     goarch:
@@ -38,6 +36,7 @@ archives:
     windows: Windows
     amd64: x86_64
   builds:
+  - hello-darwin-arm64
   - hello-darwin
 checksum:
   name_template: 'checksumsmac.txt'
