@@ -23,4 +23,4 @@ jobs:
         run: |-
           echo 'GITHUB_TOKEN=${{secrets.GITHUB_TOKEN}}' > .release-env
       - name: release publish
-        run: make release
+        run: goreleaser release --rm-dist
