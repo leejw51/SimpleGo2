@@ -1,32 +1,86 @@
-# This is an example .goreleaser.yml file with some sane defaults.
-# Make sure to check the documentation at http://goreleaser.com
 before:
   hooks:
-    # You may remove this if you don't use go modules.
-    - go mod tidy
-    # you may remove this if you don't need go generate
-    - go generate ./...
+  - go mod download
+
 builds:
-  - env:
+  - id: "hello-darwin-arm64"
+    main: .
+    binary: bin/hello
+    env:
       - CGO_ENABLED=1
+      - CC=oa64-clang
+      - CXX=oa64-clang++
+    goos:
+      - darwin
+    goarch:
+      - arm64
+    flags:
+        - -tags=cgo,ledger,!test_ledger_mock,!ledger_mock,!ledger_zemu
+    ldflags:
+      - -s -w -X github.com/cosmos/cosmos-sdk/version.Name=crypto-org-chain -X github.com/cosmos/cosmos-sdk/version.ServerName=chain-maind -X github.com/cosmos/cosmos-sdk/version.ClientName=chain-maincli -X github.com/cosmos/cosmos-sdk/version.Version={{.Version}} -X github.com/cosmos/cosmos-sdk/version.Commit={{.Commit}}
+  - id: "hello-darwin"
+    main: .
+    binary: bin/hello
+    env:
+      - CGO_ENABLED=1
+      - CC=o64-clang
+      - CXX=o64-clang++
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    flags:
+        - -tags=cgo,ledger,!test_ledger_mock,!ledger_mock,!ledger_zemu
+  - id: "hello-linux"
+    main: .
+    binary: bin/hello
+    env:
+      - CGO_ENABLED=1
+      - CC=gcc
+      - CXX=g++
     goos:
       - linux
+    goarch:
+      - amd64
+    flags:
+      - -tags=cgo,ledger,!test_ledger_mock,!ledger_mock,!ledger_zemu
+  - id: "hello-windows"
+    main: .
+    binary: bin/hello
+    env:
+      - CGO_ENABLED=1
+      - CC=x86_64-w64-mingw32-gcc
+      - CXX=x86_64-w64-mingw32-g++
+    goos:
       - windows
-      - darwin
+    goarch:
+      - amd64
+    flags:
+      - -tags=cgo,ledger,!test_ledger_mock,!ledger_mock,!ledger_zemu
+      - -buildmode=exe
+
 archives:
-  - replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
+- name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    amd64: x86_64
+  format_overrides:
+    - goos: windows
+      format: zip
+  builds:
+  - hello-darwin
+  - hello-windows
+  - hello-linux
 checksum:
   name_template: 'checksums.txt'
-snapshot:
-  name_template: "{{ .Tag }}-next"
 changelog:
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
+    - '^docs:'
+    - '^test:'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
