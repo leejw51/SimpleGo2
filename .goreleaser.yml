@@ -29,34 +29,7 @@ builds:
       - amd64
     flags:
         - -tags=cgo,ledger,!test_ledger_mock,!ledger_mock,!ledger_zemu
-  - id: "hello-linux"
-    main: .
-    binary: bin/hello
-    env:
-      - CGO_ENABLED=1
-      - CC=gcc
-      - CXX=g++
-    goos:
-      - linux
-    goarch:
-      - amd64
-    flags:
-      - -tags=cgo,ledger,!test_ledger_mock,!ledger_mock,!ledger_zemu
-  - id: "hello-windows"
-    main: .
-    binary: bin/hello
-    env:
-      - CGO_ENABLED=1
-      - CC=x86_64-w64-mingw32-gcc
-      - CXX=x86_64-w64-mingw32-g++
-    goos:
-      - windows
-    goarch:
-      - amd64
-    flags:
-      - -tags=cgo,ledger,!test_ledger_mock,!ledger_mock,!ledger_zemu
-      - -buildmode=exe
-
+  
 archives:
 - name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
   replacements:
@@ -64,21 +37,9 @@ archives:
     linux: Linux
     windows: Windows
     amd64: x86_64
-  format_overrides:
-    - goos: windows
-      format: zip
   builds:
   - hello-darwin
-  - hello-windows
-  - hello-linux
 checksum:
-  name_template: 'checksums.txt'
-changelog:
-  sort: asc
-  filters:
-    exclude:
-    - '^docs:'
-    - '^test:'
-snapshot:
-  name_template: "{{ .Tag }}-next"
+  name_template: 'checksumsmac.txt'
+
 
