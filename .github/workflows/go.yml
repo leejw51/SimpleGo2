@@ -27,7 +27,4 @@ jobs:
           args: release --snapshot --rm-dist --skip-validate   
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |-
-          echo 'GITHUB_TOKEN=${{secrets.GITHUB_TOKEN}}' > .release-env
-
       
